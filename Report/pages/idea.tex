@@ -1,0 +1,27 @@
+\section{Ý tưởng thực hiện}
+
+\subsection{Tổng quan}
+Trong bài toán này, mục tiêu là giảm số lượng màu trong ảnh gốc nhưng vẫn giữ lại được càng nhiều chi tiết và chất lượng càng tốt. Việc giảm số lượng màu giúp tiết kiệm dung lượng lưu trữ và đơn giản hóa quá trình xử lý ảnh.
+
+Phương pháp được sử dụng là thuật toán K-Means Clustering, một phương pháp phân nhóm (clustering) phổ biến trong lĩnh vực học máy không giám sát. Thuật toán sẽ gom nhóm các pixel màu tương đồng lại thành \(k\) cụm (clusters), và đại diện cho mỗi cụm là một màu centroid duy nhất.
+
+\subsection{Input, Output}
+\begin{itemize}
+	\item \textbf{Input:} Một file ảnh màu (dạng PNG, JPG, hoặc BMP)
+	\item \textbf{Output:} Ảnh mới đã được giảm số màu xuống \(k\) màu tùy chọn, lưu dưới dạng PNG và PDF.%
+\end{itemize}
+
+\subsection{Ý tưởng giải quyết}
+Ảnh màu là một ma trận 3 chiều kích thước \((height, width, 3)\), mỗi pixel có giá trị màu RGB. Ý tưởng của thuật toán:
+\begin{enumerate}
+	\item Chuyển ảnh thành dạng ma trận 1D gồm \(N\) điểm dữ liệu, mỗi điểm có 3 thuộc tính (R, G, B)
+	\item Khởi tạo \(k\) centroid ngẫu nhiên (hoặc lấy trực tiếp từ pixel của ảnh)
+	\item Tính khoảng cách từ từng pixel đến tất cả các centroid
+	\item Gán mỗi pixel vào cụm có centroid gần nhất
+	\item Tính lại các centroid mới là trung bình các pixel thuộc mỗi cụm
+	\item Lặp lại các bước trên cho đến khi các centroid hội tụ (không thay đổi đáng kể) hoặc đạt số lần lặp tối đa
+	\item Dùng các centroid thu được để gán lại màu cho từng pixel, tái tạo ảnh mới với \(k\) màu
+\end{enumerate}
+
+Thuật toán này đơn giản, dễ cài đặt, và đặc biệt phù hợp với bài toán nén số lượng màu trong ảnh thực tế.
+

@@ -1,0 +1,43 @@
+\section{Chi tiết thực hiện}
+
+\subsection{Cấu trúc chương trình}
+Chương trình gồm các hàm chính sau:
+
+\begin{itemize}
+    \item \textbf{read\_img}: Đọc ảnh từ đường dẫn cho trước và trả về ma trận ảnh 2D
+    \item \textbf{show\_img}: Hiển thị ảnh sử dụng thư viện matplotlib
+    \item \textbf{save\_img}: Lưu ảnh với định dạng PNG hoặc PDF
+    \item \textbf{convert\_img\_to\_1d}: Chuyển ma trận ảnh 2D về dạng ma trận 1D \((N, 3)\)
+    \item \textbf{kmeans}: Thực hiện thuật toán K-Means Clustering
+    \item \textbf{generate\_2d\_img}: Tái tạo ảnh 2D từ centroids và labels sau khi phân cụm
+\end{itemize}
+
+\subsection{Chi tiết thuật toán K-Means}
+
+\textbf{Bước 1: Khởi tạo centroid}
+\begin{itemize}
+    \item Nếu chọn \texttt{`random'}: khởi tạo ngẫu nhiên giá trị RGB từ 0–255
+    \item Nếu chọn \texttt{`in\_pixels'}: chọn ngẫu nhiên \(k\) pixel từ ảnh làm centroid
+\end{itemize}
+
+\textbf{Bước 2: Gán pixel vào cụm gần nhất}
+
+Sử dụng numpy broadcasting để tính khoảng cách Euclidean (bình phương) giữa tất cả các pixel và centroid.
+Sau đó, gán mỗi pixel vào cụm có centroid gần nhất.
+
+\textbf{Bước 3: Cập nhật centroid}
+
+Tính lại centroid mới là trung bình cộng các pixel thuộc cùng một cụm.
+
+\textbf{Bước 4: Kiểm tra hội tụ}
+
+Lặp lại bước 2 và 3 cho đến khi centroid mới gần bằng centroid cũ với sai số tuyệt đối nhỏ hơn \(1e-3\) (0.001) hoặc đã đạt số vòng lặp tối đa.
+
+\subsection{Tối ưu hiệu năng}
+Để tăng tốc thuật toán:
+\begin{itemize}
+    \item Sử dụng numpy broadcasting thay cho vòng lặp for
+    \item Tính khoảng cách bình phương để tránh căn bậc hai
+    \item Kiểm tra hội tụ sớm bằng \texttt{np.allclose}
+\end{itemize}
+
